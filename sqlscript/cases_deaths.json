@@ -1,0 +1,17 @@
+{
+	"name": "cases_deaths",
+	"properties": {
+		"content": {
+			"query": "create database test;\n\nuse test;\n\ncreate external data SOURCE datasource\nwith (\n    location = 'https://dlproccesseddata.blob.core.windows.net/proccessed'\n\n);\ndrop external file FORMAT csv_format;\n\ncreate external file format csv_format\nWITH(\n    FORMAT_TYPE=DELIMITEDTEXT,\n    FORMAT_OPTIONS\n    (\n        FIELD_TERMINATOR = ',',\n        FIRST_ROW = 2\n    )\n);\n\ndrop external table cases_deaths;\n\ncreate external table cases_deaths(\n    country varchar(100),\n    country_code_2_digit varchar(20),\n    [country_code_3_digit] varchar(30),\n    Reported_date date,\n    confirmed_cases_count NUMERIC,\n    deaths_count NUMERIC\n)\nWITH(\n\n    location='/cases_deaths/part-00000-b512eeae-df46-4cf3-b048-b912ce128b4a-c000.csv',\n    data_source = datasource,\n    file_format = csv_format\n);\n    \nselect * from cases_deaths;\n\nselect top 10 from cases_deaths;\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "test",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
